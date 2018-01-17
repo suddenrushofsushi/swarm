@@ -1178,12 +1178,14 @@ defmodule Swarm.Tracker do
 
   defp broadcast_event([], _clock, _event),  do: :ok
   defp broadcast_event(nodes, clock, event) do
-    case :rpc.sbcast(nodes, __MODULE__, {:event, self(), clock, event}) do
-      {_good, []}  -> :ok
-      {_good, bad_nodes} ->
-        warn "broadcast of event (#{inspect event}) was not recevied by #{inspect bad_nodes}"
-        :ok
-    end
+    :rpc.abcast(node, __MODULE__, {:event, self(), clock, event})
+    :ok
+    #case :rpc.sbcast(nodes, __MODULE__, {:event, self(), clock, event}) do
+    #  {_good, []}  -> :ok
+    #  {_good, bad_nodes} ->
+    #    warn "broadcast of event (#{inspect event}) was not recevied by #{inspect bad_nodes}"
+    #    :ok
+    #end
   end
 
   # Add a registration and reply to the caller with the result, then return the state transition
