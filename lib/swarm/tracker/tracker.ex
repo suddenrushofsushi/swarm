@@ -1178,7 +1178,7 @@ defmodule Swarm.Tracker do
 
   defp broadcast_event([], _clock, _event),  do: :ok
   defp broadcast_event(nodes, clock, event) do
-    :rpc.abcast(node, __MODULE__, {:event, self(), clock, event})
+    :rpc.abcast(nodes, __MODULE__, {:event, self(), clock, event})
     :ok
     #case :rpc.sbcast(nodes, __MODULE__, {:event, self(), clock, event}) do
     #  {_good, []}  -> :ok
